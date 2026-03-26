@@ -40,24 +40,3 @@ const RobotScene = () => {
 };
 
 export default RobotScene;
-      robotRef.current.rotation.y += 0.005;
-      robotRef.current.position.y = -1.5 + Math.sin(state.clock.getElapsedTime()) * 0.15;
-    }
-  });
-
-  useEffect(() => {
-    if (gltf) {
-      gltf.scene.scale.set(1.5, 1.5, 1.5);
-      gltf.scene.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-    }
-  }, [gltf]);
-
-  return <primitive ref={robotRef} object={gltf.scene} />;
-};
-
-export default RobotScene;
