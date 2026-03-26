@@ -1,42 +1,56 @@
-import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Box } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
+import { Suspense } from 'react';
+import { RobotModel } from './RobotModel';
+import { Particles } from './Particles';
 
-const RobotScene = () => {
-  const groupRef = useRef();
-
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.5;
-    }
-  });
-
+export function RobotScene() {
   return (
-    <group ref={groupRef}>
-      {/* Head */}
-      <Box position={[0, 1.5, 0]} args={[1, 1, 1]}>
-        <meshStandardMaterial color="royalblue" />
-      </Box>
-      {/* Body */}
-      <Box position={[0, 0, 0]} args={[1.5, 2, 1]}>
-        <meshStandardMaterial color="gray" />
-      </Box>
-      {/* Arms */}
-      <Box position={[-1.25, 0, 0]} args={[0.5, 1.5, 0.5]}>
-        <meshStandardMaterial color="royalblue" />
-      </Box>
-      <Box position={[1.25, 0, 0]} args={[0.5, 1.5, 0.5]}>
-        <meshStandardMaterial color="royalblue" />
-      </Box>
-      {/* Legs */}
-      <Box position={[-0.5, -1.75, 0]} args={[0.5, 1.5, 0.5]}>
-        <meshStandardMaterial color="royalblue" />
-      </Box>
-      <Box position={[0.5, -1.75, 0]} args={[0.5, 1.5, 0.5]}>
-        <meshStandardMaterial color="royalblue" />
-      </Box>
-    </group>
-  );
-};
+    <div className="w-full h-full absolute inset-0 -z-10 bg-primary">
+      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+        {/* Environment and Lighting */}
+        <ambientLight intensity={0.5} />
+        <directionalLight 
+          position={[5, 10, 5]} 
+          intensity={2} 
+          color="#ffffff"
+        />
+        <directionalLight 
+          position={[-5, -5, -5]} 
+          intensity={1} 
+          color="#38bdf8"
+        />
+        
+        {/* Soft studio lighting to make metal pop */}
+        <Environment preset="city" />
 
-export default RobotScene;
+        {/* Scene Objects */}
+        <Suspense fallback={null}>
+          <RobotModel />
+        </Suspense>
+        
+        <Particles count={700} />
+
+        {/* Soft shadow below the robot */}
+        <ContactShadows 
+          position={[0, -2, 0]} 
+          opacity={0.6} 
+          scale={10} 
+          blur={2.5} 
+          far={4} 
+          color="#000000" 
+        />
+
+        {/* Camera Controls */}
+        <OrbitControls 
+          enableZoom={false} 
+          enablePan={false} 
+          minPolarAngle={Math.PI / 2 - 0.2} 
+          maxPolarAngle={Math.PI / 2 + 0.2} 
+          minAzimuthAngle={-0.3}
+          maxAzimuthAngle={0.3}
+        />
+      </Canvas>
+    </div>
+  );
+}

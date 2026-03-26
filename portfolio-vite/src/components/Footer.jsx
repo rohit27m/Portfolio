@@ -1,13 +1,21 @@
-import React from 'react';
-
-const Footer = () => {
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="bg-gray-800 p-4">
-      <div className="container mx-auto text-center text-gray-400">
-        <p>&copy; 2026 MyPortfolio. All rights reserved.</p>
+    <footer className="w-full bg-primary py-8 border-t border-white/5 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+        <div className="mb-4 md:mb-0">
+          <p>
+            &copy; {currentYear} Rohit Munamarthi. All rights reserved.
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <span>Designed & Built with</span>
+          <span className="text-red-500 animate-pulse">❤️</span>
+          <span>using React & Three.js</span>
+        </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
