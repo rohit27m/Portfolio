@@ -1,27 +1,15 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const skills = [
-  'JavaScript', 'React', 'Node.js', 'Three.js', 'Tailwind CSS', 'HTML', 'CSS', 'Git'
-];
-
-const Skills = () => {
-  return (
-    <section className="py-20 px-4 bg-gray-900">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8">Skills</h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {skills.map((skill, index) => (
-            <div key={index} className="bg-gray-700 text-white py-2 px-4 rounded-lg">
-              {skill}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Skills;
+  { name: 'JavaScript', level: '85%' },
+  { name: 'React', level: '80%' },
+  { name: 'Node.js', level: '75%' },
+  { name: 'Three.js', level: '65%' },
+  { name: 'Tailwind CSS', level: '80%' },
+  { name: 'Java', level: '90%' },
+  { name: 'Git', level: '85%' },
+  { name: 'HTML/CSS', level: '90%' },
 ];
 
 const Skills = () => {

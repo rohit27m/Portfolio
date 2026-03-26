@@ -1,44 +1,18 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const projects = [
   {
     title: 'Project One',
     description: 'A brief description of the first project.',
-    link: '#',
   },
   {
     title: 'Project Two',
     description: 'A brief description of the second project.',
-    link: '#',
   },
   {
     title: 'Project Three',
     description: 'A brief description of the third project.',
-    link: '#',
-  },
-];
-
-const Projects = () => {
-  return (
-    <section className="py-20 px-4 bg-gray-800">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8">Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <div key={index} className="bg-gray-700 p-6 rounded-lg">
-              <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-              <p className="mb-4">{project.description}</p>
-              <a href={project.link} className="text-blue-400 hover:underline">View Project</a>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Projects;
-    description: 'A web application for students to register for courses online.',
   },
 ];
 

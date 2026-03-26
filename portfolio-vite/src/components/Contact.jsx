@@ -1,30 +1,13 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const Contact = () => {
   return (
-    <section className="py-20 px-4 bg-gray-900">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8">Contact Me</h2>
-        <form className="max-w-xl mx-auto">
-          <div className="mb-4">
-            <input type="text" placeholder="Your Name" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-blue-500" />
-          </div>
-          <div className="mb-4">
-            <input type="email" placeholder="Your Email" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-blue-500" />
-          </div>
-          <div className="mb-4">
-            <textarea placeholder="Your Message" rows="4" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-blue-500"></textarea>
-          </div>
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded">
-            Send Message
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-};
-
-export default Contact;
+    <div id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
+      <div className="max-w-4xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold mb-8"
         >

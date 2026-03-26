@@ -19,16 +19,3 @@ const Hero3D = () => {
 };
 
 export default Hero3D;
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 5, 5]} intensity={1} />
-        <RobotScene />
-      </Canvas>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white">
-        <h1 className="text-5xl font-bold">Rohit Munamarthi</h1>
-        <p className="text-xl mt-2">Software Developer | Java Specialist | Full-Stack Engineer</p>
-      </div>
-    </div>
-  );
-};
-
-export default Hero3D;

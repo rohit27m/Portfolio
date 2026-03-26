@@ -1,19 +1,13 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <section className="py-20 px-4 bg-gray-800">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4">About Me</h2>
-        <p className="text-lg max-w-3xl mx-auto">
-          I am a passionate and creative developer with a love for building beautiful and functional web applications. I have experience with various technologies and I am always eager to learn new things.
-        </p>
-      </div>
-    </section>
-  );
-};
-
-export default About;
+    <div id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800 text-white">
+      <div className="max-w-4xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold text-center mb-8"
         >
