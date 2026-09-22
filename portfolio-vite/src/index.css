@@ -1,40 +1,256 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #0B0F19;
-  --color-secondary: #111827;
-  --color-accent: #38BDF8;
-  --color-text-main: #E5E7EB;
+/* ===========================================================================
+   ART DIRECTION — "MACHINE SHOP EDITORIAL"
+   Off-black ground · bone ink · one signal accent (vermilion) · zero radii.
+   Everything is a rule, a tick, or a plate. No cards, no gradients as decor.
+   =========================================================================== */
 
-  --font-sans: "Roboto", system-ui, -apple-system, sans-serif;
+@theme {
+  --color-void: #060607;
+  --color-primary: #0A0A0C;
+  --color-secondary: #0E0E11;
+  --color-surface: #141418;
+  --color-border: #1D1D22;
+
+  --color-accent: #FF4A17;        /* signal — used sparingly, always deliberate */
+  --color-accent-muted: #B9AF9C;  /* warm bone-grey — the quiet voice */
+  --color-bone: #EDE6D8;
+
+  --color-text-bright: #F4F1EA;
+  --color-text-main: #928D84;
+  --color-text-muted: #56524A;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Archivo", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
-  body {
-    @apply bg-primary text-text-main overflow-x-hidden antialiased selection:bg-accent/30 selection:text-white;
-    font-family: var(--font-sans);
+  :root {
+    --mx: 50vw;
+    --my: 50vh;
+    --sig: #FF4A17; /* live signal hue — projects retint this locally */
   }
 
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
+  * { -webkit-tap-highlight-color: transparent; }
+
+  body {
+    @apply bg-primary text-text-main overflow-x-hidden antialiased;
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01", "ss03", "tnum" 0;
+    letter-spacing: -0.011em;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-primary;
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-void);
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-secondary border border-white/5 rounded-full;
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--color-void); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+  html { scroll-behavior: smooth; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-accent/50;
-  }
+
+  h1, h2, h3 { text-wrap: balance; }
 }
 
 @layer utilities {
-  .glow-text {
-    text-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 0 40px rgba(56, 189, 248, 0.2);
+  /* --- Grid ---------------------------------------------------------------- */
+  .section-container {
+    @apply max-w-[100rem] mx-auto px-5 sm:px-8 md:px-12 lg:px-16;
   }
-  .glass-panel {
-    @apply bg-secondary/40 backdrop-blur-xl border border-white/5 shadow-2xl;
+
+  /* --- Display type ------------------------------------------------------- */
+  /* Archivo's width axis is the whole voice: compressed, heavy, cut tight. */
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 78, "wght" 800;
+    letter-spacing: -0.035em;
+    line-height: 0.84;
+    @apply text-text-bright uppercase;
+  }
+  /* Colour is deliberately left off `.display-wide`: callers always state one,
+     and omitting it keeps a plain `text-accent` from losing a specificity race. */
+  .display-wide {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 108, "wght" 600;
+    letter-spacing: -0.02em;
+  }
+
+  .d-hero  { font-size: clamp(3.1rem, 12.4vw, 12rem); }
+  .d-xl    { font-size: clamp(2.6rem, 8.6vw, 8rem); }
+  .d-lg    { font-size: clamp(2.1rem, 5.6vw, 5rem); }
+  .d-md    { font-size: clamp(1.6rem, 3.2vw, 2.6rem); }
+
+  /* Legacy hooks kept so any older markup still inherits the new voice.
+     Declared long-hand rather than @apply'd — Tailwind v4 only resolves
+     @apply against real utilities, not other hand-written classes. */
+  .heading-lg,
+  .heading-md {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 78, "wght" 800;
+    letter-spacing: -0.035em;
+    line-height: 0.84;
+    text-transform: uppercase;
+    color: var(--color-text-bright);
+  }
+  .heading-lg { font-size: clamp(2.6rem, 8.6vw, 8rem); }
+  .heading-md { font-size: clamp(2.1rem, 5.6vw, 5rem); }
+
+  .outline-type {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(237, 230, 216, 0.4);
+  }
+
+  .body-text {
+    @apply text-[0.95rem] md:text-lg text-text-main leading-[1.65] font-light;
+  }
+
+  .mono-xs {
+    font-family: var(--font-mono);
+    @apply text-[10px] sm:text-[11px] tracking-[0.22em] uppercase;
+  }
+
+  .label-text {
+    font-family: var(--font-mono);
+    @apply text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-text-muted;
+  }
+
+  /* --- Spec-sheet furniture ---------------------------------------------- */
+  .marker {
+    font-family: var(--font-mono);
+    @apply flex items-center gap-3 text-[10px] sm:text-[11px] tracking-[0.28em] uppercase text-text-muted;
+  }
+  .marker::before {
+    content: '';
+    @apply block w-6 h-[2px] bg-accent shrink-0;
+  }
+
+  .divider { @apply w-full h-px bg-border; }
+
+  /* Repeating hairline ticks — a ruler edge, used to frame big moments. */
+  .ticks {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-border) 0 1px,
+      transparent 1px 12px
+    );
+  }
+
+  .dot { color: var(--color-accent); }
+
+  /* --- Buttons ------------------------------------------------------------
+     One family: a machined "blade". Notched corner, accent plate that wipes
+     in from the left, label and arrow travelling together. Nothing rounded. */
+  .btn-blade {
+    --notch: 11px;
+    font-family: var(--font-mono);
+    @apply relative inline-flex items-center gap-3 pl-6 pr-5 py-4 text-[11px] font-bold
+           tracking-[0.2em] uppercase text-void bg-bone overflow-hidden select-none;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, 0 100%);
+    transition: color 0.35s var(--ease-out-expo);
+    isolation: isolate;
+  }
+  .btn-blade::before {
+    content: '';
+    @apply absolute inset-0 bg-accent -z-10 origin-left;
+    transform: scaleX(0);
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .btn-blade:hover::before { transform: scaleX(1); }
+  .btn-blade > span,
+  .btn-blade > svg {
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .btn-blade:hover > span { transform: translateX(3px); }
+  .btn-blade:hover > svg { transform: translateX(7px); }
+
+  /* Secondary — bracketed label. Brackets spread, rule sweeps. */
+  .btn-ghost {
+    font-family: var(--font-mono);
+    @apply relative inline-flex items-center gap-2 py-3 text-[11px] font-bold tracking-[0.2em]
+           uppercase text-text-main transition-colors duration-300 hover:text-text-bright;
+  }
+  .btn-ghost::before,
+  .btn-ghost::after {
+    @apply text-accent inline-block;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .btn-ghost::before { content: '['; }
+  .btn-ghost::after  { content: ']'; }
+  .btn-ghost:hover::before { transform: translateX(-5px); }
+  .btn-ghost:hover::after  { transform: translateX(5px); }
+
+  /* Kept for any legacy markup — same blade family, declared long-hand. */
+  .btn-solid,
+  .btn-primary,
+  .btn-secondary {
+    font-family: var(--font-mono);
+    @apply relative inline-flex items-center gap-2 py-3 text-[11px] font-bold tracking-[0.2em]
+           uppercase text-text-main transition-colors duration-300 hover:text-text-bright;
+  }
+  .btn-solid::before,
+  .btn-primary::before,
+  .btn-secondary::before { content: '['; @apply text-accent inline-block; }
+  .btn-solid::after,
+  .btn-primary::after,
+  .btn-secondary::after { content: ']'; @apply text-accent inline-block; }
+
+  .link-underline { @apply relative inline-block; }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 w-full h-px bg-current origin-right;
+    transform: scaleX(0);
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .link-underline:hover::after { @apply origin-left; transform: scaleX(1); }
+
+  /* --- Reveals ----------------------------------------------------------- */
+  .clip-line { @apply block overflow-hidden; }
+
+  /* --- Marquee ----------------------------------------------------------- */
+  .marquee { @apply flex w-max; will-change: transform; }
+  .marquee-run { animation: marquee-x 34s linear infinite; }
+  .marquee-run-rev { animation: marquee-x 34s linear infinite reverse; }
+  .marquee-host:hover .marquee-run,
+  .marquee-host:hover .marquee-run-rev { animation-play-state: paused; }
+
+  /* --- Film grain -------------------------------------------------------- */
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+
+  /* Signal wash — a project's own hue bleeding into the environment. */
+  .sig-wash {
+    background: radial-gradient(120% 100% at 78% 50%, var(--sig) 0%, transparent 62%);
+  }
+}
+
+@keyframes marquee-x {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pulse-signal {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,102 +1,165 @@
-import { motion } from 'framer-motion';
-import { FaJava, FaPython, FaReact, FaNodeJs, FaGitAlt, FaCube } from 'react-icons/fa';
-import { SiJavascript, SiTypescript } from 'react-icons/si';
-import { MdApi, MdSecurity, MdCode, MdStorage } from 'react-icons/md';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const skillCategories = [
+const ease = [0.16, 1, 0.3, 1];
+
+const groups = [
   {
-    title: 'Languages',
-    skills: [
-      { name: 'Java', icon: FaJava, color: 'text-orange-500' },
-      { name: 'Python', icon: FaPython, color: 'text-blue-500' },
-      { name: 'JavaScript', icon: SiJavascript, color: 'text-yellow-400' },
-    ]
+    category: 'Languages',
+    note: 'Java is the daily driver; JS for anything with a screen.',
+    items: ['Java', 'JavaScript', 'Python', 'SQL'],
   },
   {
-    title: 'Technologies',
-    skills: [
-      { name: 'React', icon: FaReact, color: 'text-cyan-400' },
-      { name: 'Three.js', icon: FaCube, color: 'text-white' },
-      { name: 'Git', icon: FaGitAlt, color: 'text-red-500' },
-      { name: 'REST APIs', icon: MdApi, color: 'text-green-400' },
-    ]
+    category: 'AI / ML',
+    note: 'Classical models for tabular work, CV for anything with a camera.',
+    items: ['Scikit-Learn', 'TensorFlow', 'OpenCV', 'DeepFace', 'Ollama'],
   },
   {
-    title: 'Concepts',
-    skills: [
-      { name: 'Object-Oriented Programming', icon: MdCode, color: 'text-purple-400' },
-      { name: 'Data Structures', icon: MdStorage, color: 'text-indigo-400' },
-      { name: 'Full Stack Development', icon: FaNodeJs, color: 'text-green-500' },
-      { name: 'Authentication Systems', icon: MdSecurity, color: 'text-red-400' },
-    ]
-  }
+    category: 'Web',
+    note: 'React on the front, Spring Boot or Node behind it.',
+    items: ['React', 'Next.js', 'Node.js', 'Spring Boot', 'Tailwind'],
+  },
+  {
+    category: 'Data',
+    note: 'Schema first — I model before I write a query.',
+    items: ['PostgreSQL', 'MySQL', 'Supabase', 'Firebase'],
+  },
+  {
+    category: 'Ship',
+    note: 'Containerise, deploy, watch it, fix it.',
+    items: ['Docker', 'Git', 'Vercel', 'Postman'],
+  },
 ];
 
 export function Skills() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+  const [active, setActive] = useState(null);
+  const current = active !== null ? groups[active] : null;
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden bg-secondary/20">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Technical <span className="text-accent">Expertise</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            A comprehensive overview of my technical skills, tools, and the core concepts I utilize to build robust applications.
-          </p>
-        </motion.div>
+    <section id="skills" className="py-24 md:py-36 border-t border-border">
+      <div className="section-container">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {skillCategories.map((category, idx) => (
-            <motion.div 
-              key={category.title}
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              className="glass-panel p-8 rounded-2xl"
+          {/* Left — heading + the word the pointer is currently on */}
+          <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="marker mb-7"
             >
-              <h3 className="text-2xl font-semibold text-white mb-6 border-b border-white/10 pb-4">
-                {category.title}
-              </h3>
-              <div className="flex flex-col gap-4">
-                {category.skills.map((skill) => {
-                  const Icon = skill.icon;
-                  return (
-                    <motion.div 
-                      key={skill.name}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                      className="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-transparent hover:border-white/10 cursor-default"
+              02 / Stack
+            </motion.p>
+
+            <h2 className="display d-xl mb-8">
+              <span className="clip-line">
+                <motion.span
+                  initial={{ y: '108%' }}
+                  whileInView={{ y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.9, ease }}
+                  className="block"
+                >
+                  End to end<span className="dot">.</span>
+                </motion.span>
+              </span>
+            </h2>
+
+            {/* Reactive readout — replaces a paragraph nobody reads */}
+            <div className="hidden lg:block h-28 relative border-l-2 border-accent pl-5">
+              <AnimatePresence mode="wait">
+                {current ? (
+                  <motion.div
+                    key={current.category}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3, ease }}
+                  >
+                    <p className="display-wide text-text-bright text-2xl mb-2">{current.category}</p>
+                    <p className="text-sm text-text-main font-light max-w-xs leading-relaxed">
+                      {current.note}
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="rest"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p className="mono-xs text-text-muted mb-2">Index</p>
+                    <p className="text-sm text-text-main font-light max-w-xs leading-relaxed">
+                      Five groups, no progress bars. Hover a row for what I
+                      actually use it for.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Right — the index itself */}
+          <div
+            className="lg:col-span-7 lg:pt-4"
+            onMouseLeave={() => setActive(null)}
+          >
+            <div className="border-b border-border">
+              {groups.map((group, i) => (
+                <motion.div
+                  key={group.category}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: i * 0.05, ease }}
+                  onMouseEnter={() => setActive(i)}
+                  className="relative border-t border-border py-6 md:py-7 overflow-hidden"
+                >
+                  {/* fill that wipes in behind the row */}
+                  <span
+                    className={`absolute inset-0 bg-surface origin-left transition-transform
+                                duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]
+                                ${active === i ? 'scale-x-100' : 'scale-x-0'}`}
+                  />
+                  <span
+                    className={`absolute left-0 top-0 h-full w-[2px] bg-accent origin-top
+                                transition-transform duration-500
+                                ${active === i ? 'scale-y-100' : 'scale-y-0'}`}
+                  />
+
+                  <div className="relative grid md:grid-cols-[1.5rem_9rem_1fr] gap-x-6 gap-y-3 items-baseline px-0 md:px-5">
+                    <span className="hidden md:block font-mono text-[11px] text-text-muted tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h3
+                      className={`display-wide text-base tracking-wide transition-colors duration-300
+                                  ${active === i ? 'text-accent' : 'text-text-bright'}`}
                     >
-                      <div className={`p-2 rounded-lg bg-black/30 ${skill.color}`}>
-                        <Icon size={24} />
-                      </div>
-                      <span className="text-gray-300 font-medium">{skill.name}</span>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
+                      {group.category}
+                    </h3>
+                    <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                      {group.items.map((item) => (
+                        <li
+                          key={item}
+                          className={`text-sm font-light transition-colors duration-300
+                                      ${active === i ? 'text-text-bright' : 'text-text-muted'}`}
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* on touch, the note is always visible instead of on hover */}
+                  <p className="lg:hidden relative mono-xs text-text-muted mt-3 px-0 md:px-5">
+                    {group.note}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
